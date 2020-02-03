@@ -27,6 +27,10 @@ app.get('/api/timestamp', (req, res) => {
 
 app.get('/api/timestamp/:date_string', (req, res) => {
 	let date_string = req.params.date_string
+	let unix = date_string.indexOf('-')
+	if (unix === -1) {
+		date_string = parseInt(date_string)
+	}
 	let date
 	try {
 		date = new Date(date_string)
