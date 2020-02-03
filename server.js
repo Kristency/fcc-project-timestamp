@@ -27,15 +27,15 @@ app.get('/api/timestamp', (req, res) => {
 
 app.get('/api/timestamp/:date_string', (req, res) => {
 	let date_string = req.params.date_string
-	let unix = date_string.indexOf('-')
-	if (unix === -1) {
-		date_string = parseInt(date_string)
-	}
-	let date
-	try {
+	let valid_utc = /^\d{4}-{1}\d{2}-{1}\d{2}$/.test(date_string)
+	let valid_unix = /^\d+$/.test(date_string)
+	if (valid_unix || valid_utc) {
+		if (valid_unix) {
+			date_string = parseInt(date_string)
+		}
 		date = new Date(date_string)
 		res.json({ unix: date.getTime(), utc: date.toUTCString() })
-	} catch (e) {
+	} else {
 		res.json({ error: 'Invalid Date' })
 	}
 })
