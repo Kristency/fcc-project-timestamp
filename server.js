@@ -20,19 +20,19 @@ app.get('/', (req, res) => {
 })
 
 // timestamp endpoint...
+app.get('/api/timestamp', (req, res) => {
+	date = new Date()
+	res.json({ unix: date.getTime(), utc: date.toUTCString() })
+})
+
 app.get('/api/timestamp/:date_string', (req, res) => {
 	let date_string = req.params.date_string
 	let date
-	if (date_string) {
-		try {
-			date = new Date(date_string)
-			res.json({ unix: date.getTime(), utc: date.toUTCString() })
-		} catch (e) {
-			res.json({ error: 'Invalid Date' })
-		}
-	} else {
-		date = new Date()
+	try {
+		date = new Date(date_string)
 		res.json({ unix: date.getTime(), utc: date.toUTCString() })
+	} catch (e) {
+		res.json({ error: 'Invalid Date' })
 	}
 })
 
